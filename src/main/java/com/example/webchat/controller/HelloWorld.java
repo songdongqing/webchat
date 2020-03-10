@@ -1,12 +1,14 @@
 package com.example.webchat.controller;
 
-import com.example.webchat.connect.CheckUtil;
+import com.example.webchat.util.CheckUtil;
 import com.example.webchat.service.WebChatService;
 import com.example.webchat.util.MessageType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +24,8 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "/index")
 public class HelloWorld {
+    @Autowired
+    WebChatService webChatService;
 
     @RequestMapping(method = RequestMethod.GET)
     //接入开发者模式，通过GET方法
@@ -39,6 +43,11 @@ public class HelloWorld {
 
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/hello")
+    public String hello(){
+        return "hello,dont make me you";
+    }
     //消息的响应通过POST方式
     @RequestMapping(method=RequestMethod.POST)
     public void post(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -63,9 +72,9 @@ public class HelloWorld {
             String msgType = map.get("MsgType");
             String xml = null;//处理输入消息，返回结果的xml
             if(MessageType.REQ_MESSAGE_TYPE_EVENT.equals(msgType)){
-                xml = WebChatService.parseEvent(map);
+                xml = webChatService.parseEvent(map);
             }else{
-                xml = WebChatService.parseMessage(map);
+                xml = webChatService.parseMessage(map);
             }
             //返回封装的xml
             //System.out.println(xml);

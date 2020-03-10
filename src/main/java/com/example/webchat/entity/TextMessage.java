@@ -8,6 +8,8 @@ package com.example.webchat.entity;
 import com.example.webchat.entity.BaseMessage;
 import com.example.webchat.util.MessageType;
 
+import java.util.Date;
+
 /**
  * 文本消息
  * @author Administrator

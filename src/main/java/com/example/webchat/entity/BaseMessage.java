@@ -1,11 +1,17 @@
 package com.example.webchat.entity;
 
+import com.example.webchat.util.MessageType;
+import lombok.Data;
+
+import java.util.Date;
+
 /**
  * 请求消息的公共字段类
  *
  * @author Administrator
  *
  */
+@Data
 public abstract class BaseMessage {
     // 开发者微信号
     private String ToUserName;
@@ -15,48 +21,14 @@ public abstract class BaseMessage {
     private long CreateTime;
     // 消息id，64位整型
     private long MsgId;
-
+    private String Content;
     private String MsgType;
-    /**
-     * 获取 消息类型
-     *
-     * @return 消息类型
-     */
-    public  String getMsgType(){return MsgType;}
 
-    public void setMsgType(String msgType) {
-        MsgType = msgType;
+    public  void createMessage(String fromUserName,String toUserName,String msgType){
+        this.setToUserName(fromUserName);
+        this.setFromUserName(toUserName);
+        this.setCreateTime(new Date().getTime());
+        this.setMsgType(msgType);
     }
 
-    public String getToUserName() {
-        return ToUserName;
-    }
-
-    public void setToUserName(String toUserName) {
-        ToUserName = toUserName;
-    }
-
-    public String getFromUserName() {
-        return FromUserName;
-    }
-
-    public void setFromUserName(String fromUserName) {
-        FromUserName = fromUserName;
-    }
-
-    public long getCreateTime() {
-        return CreateTime;
-    }
-
-    public void setCreateTime(long createTime) {
-        CreateTime = createTime;
-    }
-
-    public long getMsgId() {
-        return MsgId;
-    }
-
-    public void setMsgId(long msgId) {
-        MsgId = msgId;
-    }
 }

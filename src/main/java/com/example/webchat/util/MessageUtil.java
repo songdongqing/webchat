@@ -8,9 +8,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.example.webchat.entity.ImageMessage;
 import com.example.webchat.entity.TextMessage;
+import com.example.webchat.entity.VoiceMessage;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.core.util.QuickWriter;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.io.xml.PrettyPrintWriter;
 import com.thoughtworks.xstream.io.xml.XppDriver;
 import org.dom4j.Document;
@@ -145,11 +147,11 @@ public class MessageUtil {
         return map;
     }
 //
-//    public static String textMessageToXml(TextMessage textMessage) {
-//        XStream xstream = new XStream(new DomDriver("utf-8"));
-//        xstream.alias("xml", textMessage.getClass());
-//        return xstream.toXML(textMessage);
-//    }
+    public static String textMessageToXml(TextMessage textMessage) {
+        XStream xstream = new XStream(new DomDriver("utf-8"));
+        xstream.alias("xml", textMessage.getClass());
+        return xstream.toXML(textMessage);
+    }
 //    public static String newsMessageToXml(NewsMessage newsMessage) {
 //        xstream.alias("xml", newsMessage.getClass());
 //        xstream.alias("item", new Article().getClass());
@@ -161,10 +163,10 @@ public class MessageUtil {
         return xstream.toXML(imageMessage);
     }
 //
-//    public static String voiceMessageToXml(VoiceMessage voiceMessage) {
-//        xstream.alias("xml", voiceMessage.getClass());
-//        return xstream.toXML(voiceMessage);
-//    }
+    public static String voiceMessageToXml(VoiceMessage voiceMessage) {
+        xstream.alias("xml", voiceMessage.getClass());
+        return xstream.toXML(voiceMessage);
+    }
 //
 //    public static String videoMessageToXml(VideoMessage videoMessage) {
 //        xstream.alias("xml", videoMessage.getClass());

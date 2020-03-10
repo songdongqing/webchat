@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>添加</title>
+    <!-- 引入bootstrap -->
+    <script type="text/javascript" src="webjars/jquery/1.11.1/jquery.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <script type="text/javascript" src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div  style="margin-left: 400px; margin-top: 180px;" >
+        <form action="insert1" method="post">
+
+                <div class="input-group" >
+                    <span class="input-group-addon" style="width: 100px;">类别ID：</span>
+                    <input type="text" class="form-control" name="categoryId"  style="width: 300px;">
+                        <!--<option value="0">收入</option>-->
+                        <!--<option value="1">支出</option>-->
+                    </input>
+                </div>
+                 <br>
+
+                <div class="input-group" >
+                    <span class="input-group-addon" style="width: 100px;">类别</span>
+                    <input type="text" style="width: 300px;" class="form-control" name="typeName"  placeholder="类别名" aria-label="Amount (to the nearest dollar)">
+                </div>
+                 <br>
+
+                <div class="input-group">
+                    <span class="input-group-addon" style="width: 100px;">备注：</span>
+                    <input type="text" style="width: 300px;" class="form-control" name="remark"  placeholder="备注" aria-label="Amount (to the nearest dollar)">
+                </div>
+                <br>
+
+                <div class="input-group">
+                    <span class="input-group-addon" style="width: 100px;">扩展1：</span>
+                    <input type="text" style="width: 300px;" class="form-control" name="ext1"  placeholder="扩展1" aria-label="Amount (to the nearest dollar)">
+                </div>
+                <br>
+
+                <div class="input-group">
+                    <span class="input-group-addon" style="width: 100px;">扩展2：</span>
+                    <input type="text" style="width: 300px;" class="form-control" name="ext2"  placeholder="扩展2" aria-label="Amount (to the nearest dollar)">
+                </div>
+                <br>
+
+                <div class="input-group">
+                    <span class="input-group-addon" style="width: 100px;">扩展3：</span>
+                    <input type="text" style="width: 300px;" class="form-control" name="ext3"  placeholder="扩展3" aria-label="Amount (to the nearest dollar)">
+                </div>
+                <br>
+
+
+                <!--<div class="input-group">-->
+                    <!--<span class="input-group-addon"  style="width: 100px;">时间：</span>-->
+                    <!--<input type="datetime-local" style="width: 300px;" class="form-control" name="createTime"  placeholder="时间" aria-label="Amount (to the nearest dollar)">-->
+                <!--</div>-->
+                <!--<br>-->
+
+                <input type="reset" class="btn btn-danger" value="重置" style="width: 100px;margin-left: 50px;">
+                <input type="submit" class="btn btn-info" value="提交" style="width: 100px;margin-left: 90px;">
+            </form>
+    </div>
+</div>
+
+</body>
+</html>

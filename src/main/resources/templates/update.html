@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>更新</title>
+    <!-- 引入bootstrap -->
+    <script type="text/javascript" src="webjars/jquery/1.11.1/jquery.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <script type="text/javascript" src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<form action="/updateToCategory" method="post">
+    <input type="hidden" name="categoryId" th:value="${category.getCategoryId()}">
+    类别:<input type="text" name="typeName" th:value="${category.getTypeName()}"><br>
+    备注:<input  type="text" name="remark" th:value="${category.getRemark()}"><br>
+    扩展1:<input type="text" name="ext1" th:value="${category.getExt1()}"><br>
+    扩展2:<input type="text" name="ext2" th:value="${category.getExt2()}"><br>
+    扩展3:<input type="text" name="ext3" th:value="${category.getExt3()}"><br>
+    <input type="submit" value="提交">
+</form>
+</body>
+</html>

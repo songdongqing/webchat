@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace针对哪个mapper,每个接口对应一个mapper-->
+<mapper namespace="com.example.webchat.mapper.ArticleMapper">
+
+    <!--自定义封装规则type对应哪个实体类-->
+    <resultMap type="com.example.webchat.entity.Article" id="BaseResultMap">
+        <id column="article_id" property="articleId"></id>
+        <result  column="category_id" property="categoryId"/>
+        <result  column="title" property="title"/>
+        <result  column="content" property="content"/>
+        <result  column="look_num" property="lookNum"/>
+        <result  column="love_num" property="loveNum"/>
+        <result  column="ext1" property="ext1"/>
+        <result  column="ext2" property="ext2"/>
+        <result  column="ext3" property="ext3"/>
+
+        <result column="type_name" property="typeName"/>
+        <!--property是指多的那一边定义的对象-->
+        <!--id：是指多的那一边定义的对象的唯一标识-->
+        <!--<association property="category" javaType="com.sq.bookstore.entity.Category">-->
+            <!--<id  column="category_id" property="categoryId"/>-->
+            <!--<result column="type_name" property="typeName"/>-->
+            <!--<result column="remark" property="remark"/>-->
+            <!--&lt;!&ndash;为什么查出来的扩展字段的值不对应&ndash;&gt;-->
+            <!--<result  column="ext1" property="ext1"/>-->
+            <!--<result  column="ext2" property="ext2"/>-->
+            <!--<result  column="ext3" property="ext3"/>-->
+        <!--</association>-->
+    </resultMap>
+
+    <resultMap type="com.example.webchat.entity.Article" id="BaseMap">
+        <id column="article_id" property="articleId"></id>
+        <result  column="category_id" property="categoryId"/>
+        <result  column="title" property="title"/>
+        <result  column="content" property="content"/>
+        <result  column="look_num" property="lookNum"/>
+        <result  column="love_num" property="loveNum"/>
+        <result  column="ext1" property="ext1"/>
+        <result  column="ext2" property="ext2"/>
+        <result  column="ext3" property="ext3"/>
+    </resultMap>
+
+    <!--sql片段，提高可重用性-->
+    <sql id="Base_Column_List_A">
+        a.article_id,a.category_id,a.title,a.content,a.look_num,a.love_num,a.ext1,a.ext2,a.ext3
+    </sql>
+
+    <sql id="Base_Column_List_C">
+        c.category_id,c.type_name,c.remark,c.ext1,c.ext2,c.ext3
+    </sql>
+
+    <select id="list" resultMap="BaseResultMap">
+--         SELECT a.*,b.type_name,b.remark FROM article a,category b where a.category_id=b.category_id
+        SELECT
+        <include refid="Base_Column_List_A"/>,
+        c.type_name
+        FROM article a,category c
+        where a.category_id=c.category_id
+    </select>
+
+    <select id="list2" resultMap="BaseMap">
+        SELECT * FROM article
+    </select>
+
+    <select id="getArticleById" parameterType="String" resultMap="BaseMap">
+        SELECT * FROM article WHERE article_id = #{id}
+    </select>
+
+    <delete id="deleteArticleById" parameterType="String">
+        DELETE FROM article WHERE article_id = #{id}
+    </delete>
+
+    <insert id="insertArticle" parameterType="Article">
+        INSERT INTO article
+        VALUES
+        (#{articleId},
+        #{categoryId},
+        #{title},
+        #{content},
+        #{lookNum},
+        #{loveNum},
+        #{ext1},
+        #{ext2},
+        #{ext3})
+    </insert>
+
+    <update id="updateArticle" parameterType="Article">
+        update article
+        set
+        category_id=#{categoryId},
+        title=#{title},
+        content=#{content},
+        look_num=#{lookNum},
+        love_num=#{loveNum},
+        ext1=#{ext1},
+        ext2=#{ext2},
+        ext3=#{ext3}
+        where article_id = #{articleId}
+    </update>
+
+</mapper>

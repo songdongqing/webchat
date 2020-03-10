@@ -2,10 +2,17 @@ package com.example.webchat.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.example.webchat.constant.MenuEnum;
+import com.example.webchat.constant.RedisKey;
 import com.example.webchat.entity.*;
 import com.example.webchat.util.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.stereotype.Service;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -19,9 +26,132 @@ import java.util.Map;
  * @author Administrator
  *
  */
+@Service
 public class WebChatService {
+    @Autowired
+    RedisTemplate redisTemplate;
+
+    @Autowired
+    MenuService menuService;
+
+
+
+    private String mainTextMessage(String content,TextMessage textMessage,VoiceMessage voiceMessage,ImageMessage imgmsg) throws IOException {
+
+        String respXml = null;
+
+        switch (content){
+
+            //主菜单
+            case "0" : {
+                textMessage.setContent(MenuUtil.getMenu(menuService.selectAll()));
+                respXml = MessageUtil.textMessageToXml(textMessage);
+                break;
+            }
+
+            //优惠券
+            case "1" : {
+                redisTemplate.opsForValue().set(RedisKey.getMainType(textMessage.getToUserName()),MenuEnum.YOUHUANUAN.getCode());
+                textMessage.setContent("https://how2j.cn/");
+                respXml =  MessageUtil.textMessageToXml(textMessage);
+                break;
+            }
+
+            //讲故事
+            case "2" :{
+                redisTemplate.opsForValue().set(RedisKey.getMainType(textMessage.getToUserName()),MenuEnum.JIANGBUSHI.getCode());
+                textMessage.setContent(MenuUtil.getMenu(menuService.selectSon(MenuEnum.JIANGBUSHI.getCode())));
+                respXml = MessageUtil.textMessageToXml(textMessage);
+                break;
+            }
+
+            // 飞哥传书
+            case "3" : {
+                redisTemplate.opsForValue().set(RedisKey.getMainType(textMessage.getToUserName()),MenuEnum.FEIGECHUANSHU.getCode());
+                break;
+            }
+
+            //打赏
+            case "4" : {
+                redisTemplate.opsForValue().set(RedisKey.getMainType(textMessage.getToUserName()),MenuEnum.DASHANG.getCode());
+                String filepath="/home/image/1.jpg";
+                String mediaId = HttpUtil.upload(filepath,MessageType.RESP_MESSAGE_TYPE_IMAGE,redisTemplate);
+
+                Image img = new Image();
+                img.setMediaId(mediaId);
+                imgmsg.setImage(img);
+
+                respXml =  MessageUtil.imageMessageToXml(imgmsg);
+                break;
+            }
+        }
+
+        return respXml;
+    }
+
+
+    private String sonTextMessage(String menuId,String content,TextMessage textMessage,VoiceMessage voiceMessage,ImageMessage imgmsg) throws IOException {
+
+        String respXml = null;
+
+        if(menuId.equals(MenuEnum.MAINMENU.getCode())){
+//            stringRedisTemplate.opsForValue().set(RedisKey.getMainType(textMessage.getToUserName()),null);
+            redisTemplate.delete(RedisKey.getMainType(textMessage.getToUserName()));
+            textMessage.setContent(MenuUtil.getMenu(menuService.selectAll()));
+            respXml = MessageUtil.textMessageToXml(textMessage);
+        }else {
+            switch (menuId){
+                //优惠券
+                case "1" : {
+                    textMessage.setContent("暂无菜单项");
+                    respXml = MessageUtil.textMessageToXml(textMessage);
+                    break;
+                }
+
+                //讲故事
+                case "2" :{
+                    if(content.equals("1")){
+
+                        textMessage.setContent("小狼狗");
+                        respXml = MessageUtil.textMessageToXml(textMessage);
+                        break;
+
+                    }else if(content.equals("2")){
+//                        String filepath="/home/image/voice.mp3";
+//                        //获取MediaId 通过素材管理中的接口上传多媒体文件，得到的id
+//                        String mediaId = HttpUtil.upload( filepath, MessageType.RESP_MESSAGE_TYPE_VOICE,redisTemplate);
+//                        Voice voice = new Voice();
+//                        voice.setMediaId(mediaId);
+//                        voiceMessage.setVoice(voice);
+//                        respXml =  MessageUtil.voiceMessageToXml(voiceMessage);
+
+                        textMessage.setContent("大鱼和小鱼");
+                        respXml = MessageUtil.textMessageToXml(textMessage);
+                        break;
+                    }
+
+                }
+
+                // 飞哥传书
+                case "3" : {
+                    textMessage.setContent("暂无菜单项");
+                    respXml = MessageUtil.textMessageToXml(textMessage);
+                    break;
+                }
+
+                //打赏
+                case "4" : {
+                    textMessage.setContent("暂无菜单项");
+                    respXml = MessageUtil.textMessageToXml(textMessage);
+                    break;
+                }
+            }
+        }
+
+        return respXml;
+    }
     // 处理微信发来的请求 map 消息业务处理分发
-    public static String parseMessage(Map<String, String> map) {
+    public  String parseMessage(Map<String, String> map) throws IOException {
         String respXml = null;
         try {
             // 发送方帐号
@@ -33,54 +163,24 @@ public class WebChatService {
             //获取消息内容
             String content = map.get("Content");
 
+            TextMessage textMessage = new TextMessage();
+            textMessage.createMessage(fromUserName,toUserName,MessageType.RESP_MESSAGE_TYPE_TEXT);
+
+            VoiceMessage voiceMessage = new VoiceMessage();
+            voiceMessage.createMessage(fromUserName,toUserName,MessageType.RESP_MESSAGE_TYPE_VOICE);
+
+            ImageMessage imgmsg = new ImageMessage();
+            imgmsg.createMessage(fromUserName,toUserName,MessageType.RESP_MESSAGE_TYPE_IMAGE);
+
             if (MsgType.equals(MessageType.TEXT_MESSAGE)) {
-                //优惠券
-                if(content.equals("1")){
-                    TextMessage textMessage = new TextMessage();
-                    textMessage.setToUserName(fromUserName);
-                    textMessage.setFromUserName(toUserName);
-                    textMessage.setCreateTime(new Date().getTime());
-                    textMessage.setMsgType(MessageType.RESP_MESSAGE_TYPE_TEXT);
-                    textMessage.setContent("https://how2j.cn/");
 
-                    respXml =  ReplyMessageUtil.sendTextMessage(textMessage);
-                    //打赏
-                }else if (content.equals("4")){
-
-                    String fileName = "payPhoto.jpg";
-                    String filepath="/home/image/1.jpg";
-                    String mediaId = HttpUtil.upload(fileName, filepath);
-
-                    ImageMessage imgmsg = new ImageMessage();
-                    Image img = new Image();
-
-                    imgmsg.setToUserName(fromUserName);
-                    imgmsg.setFromUserName(toUserName);
-                    imgmsg.setCreateTime(new Date().getTime());
-                    imgmsg.setMsgType(MessageType.RESP_MESSAGE_TYPE_IMAGE);
-                    img.setMediaId(mediaId);
-                    imgmsg.setImage(img);
-
-                    respXml =  MessageUtil.imageMessageToXml(imgmsg);
-                    //讲故事
-                }else if(content.equals("2")){
-
-                    VoiceMessage voiceMessage = new VoiceMessage();
-                    Voice voice = new Voice();
-                    voiceMessage.setToUserName(fromUserName);
-                    voiceMessage.setFromUserName(toUserName);
-                    voiceMessage.setCreateTime(new Date().getTime());
-                    //获取MediaId 通过素材管理中的接口上传多媒体文件，得到的id
-
-                    //voice.setMediaId();
-                    voiceMessage.setMsgType(MessageType.RESP_MESSAGE_TYPE_VOICE);
-
-                    respXml =  ReplyMessageUtil.sendVoiceMessage(voiceMessage);
-                    //飞哥传书
-                }else{
-
+                Object o = redisTemplate.opsForValue().get(RedisKey.getMainType(textMessage.getToUserName()));
+                if(o==null){
+                    respXml = mainTextMessage(content,textMessage,voiceMessage,imgmsg);
+                }else {
+                    String menuId = (String) o; //menuId 主菜单序列号 ， content 子菜单序列号
+                    respXml = sonTextMessage(menuId,content,textMessage,voiceMessage,imgmsg);
                 }
-
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -89,7 +189,7 @@ public class WebChatService {
     }
 
     // 事件消息业务分发
-    public static String parseEvent(Map<String, String> map) {
+    public  String parseEvent(Map<String, String> map) {
         String respXml = null;
         try {
             // 发送方帐号
@@ -102,15 +202,15 @@ public class WebChatService {
             String eventType = map.get("Event");
 
             // 发现直接把要返回的信息直接封装成replyMap集合，然后转换成 xml文件，是不是实体类可以不用了
-            Map<String, String> replyMap = new HashMap<String, String>();
-            replyMap.put("ToUserName", fromUserName);
-            replyMap.put("FromUserName", toUserName);
-            replyMap.put("CreateTime", String.valueOf(new Date().getTime()));
+
             if (eventType.equals(MessageType.EVENT_TYPE_SUBSCRIBE)) {// 关注
-                // 用map集合封装
-                replyMap.put("MsgType", MessageType.RESP_MESSAGE_TYPE_TEXT);
-                replyMap.put("Content", MenuUtil.getMenu());
-                respXml = XmlUtil.xmlFormat(replyMap, true);
+                TextMessage textMessage = new TextMessage();
+                textMessage.setToUserName(fromUserName);
+                textMessage.setFromUserName(toUserName);
+                textMessage.setCreateTime(new Date().getTime());
+                textMessage.setMsgType(MessageType.RESP_MESSAGE_TYPE_TEXT);
+                textMessage.setContent(MenuUtil.getMenu(menuService.selectAll()));
+                respXml = MessageUtil.textMessageToXml(textMessage);
             }
             if (eventType.equals(MessageType.EVENT_TYPE_UNSUBSCRIBE)) {// 取消关注
 

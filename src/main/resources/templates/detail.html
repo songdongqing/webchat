@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 引入bootstrap -->
+    <script type="text/javascript" src="webjars/jquery/1.11.1/jquery.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <script type="text/javascript" src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <table border="1px" cellpadding="10" cellspacing="0" class="table table-striped table-bordered table-hover  table-condensed">
+        <thead>
+        <th>ID</th>
+        <th>名字</th>
+        <th>备注</th>
+        <th>扩展1</th>
+        <th>扩展2</th>
+        <th>扩展3</th>
+        </thead>
+        <tbody>
+        <tr>
+            <td th:text="${category.getCategoryId()}"></td>
+            <td th:text="${category.getTypeName()}"></td>
+            <td th:text="${category.getRemark()}"></td>
+            <td th:text="${category.getExt1()}"></td>
+            <td th:text="${category.getExt2()}"></td>
+            <td th:text="${category.getExt3()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</body>
+</html>

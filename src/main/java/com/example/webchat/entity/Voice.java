@@ -2,7 +2,7 @@ package com.example.webchat.entity;
 
 /**
  * Author:   chenfeiliang
- * Description:
+// * Description:
  */
 public class Voice {
 
