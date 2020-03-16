@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.webchat.mapper.CouponsMapper">
+  <resultMap id="BaseResultMap" type="com.example.webchat.entity.Coupons">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="product_id" jdbcType="VARCHAR" property="productId" />
+    <result column="trade_name" jdbcType="VARCHAR" property="tradeName" />
+    <result column="main_chart_of_commodities" jdbcType="VARCHAR" property="mainChartOfCommodities" />
+    <result column="product_information_page_link_address" jdbcType="VARCHAR" property="productInformationPageLinkAddress" />
+    <result column="commodity_category_i" jdbcType="VARCHAR" property="commodityCategoryI" />
+    <result column="link_to_taobao" jdbcType="VARCHAR" property="linkToTaobao" />
+    <result column="commodity_price" jdbcType="VARCHAR" property="commodityPrice" />
+    <result column="monthly_merchandise_sales" jdbcType="VARCHAR" property="monthlyMerchandiseSales" />
+    <result column="income_ratio" jdbcType="VARCHAR" property="incomeRatio" />
+    <result column="commission" jdbcType="VARCHAR" property="commission" />
+    <result column="the_seller_want_want" jdbcType="VARCHAR" property="theSellerWantWant" />
+    <result column="seller_id" jdbcType="VARCHAR" property="sellerId" />
+    <result column="name_of_shop" jdbcType="VARCHAR" property="nameOfShop" />
+    <result column="platform_type" jdbcType="VARCHAR" property="platformType" />
+    <result column="coupon_id" jdbcType="VARCHAR" property="couponId" />
+    <result column="total_coupons" jdbcType="VARCHAR" property="totalCoupons" />
+    <result column="coupon_surplus" jdbcType="VARCHAR" property="couponSurplus" />
+    <result column="coupon_value" jdbcType="VARCHAR" property="couponValue" />
+    <result column="coupon_start_time" jdbcType="VARCHAR" property="couponStartTime" />
+    <result column="coupon_closing_time" jdbcType="VARCHAR" property="couponClosingTime" />
+    <result column="coupon_link" jdbcType="VARCHAR" property="couponLink" />
+    <result column="product_coupon_promotion_link" jdbcType="VARCHAR" property="productCouponPromotionLink" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, product_id, trade_name, main_chart_of_commodities, product_information_page_link_address, 
+    commodity_category_i, link_to_taobao, commodity_price, monthly_merchandise_sales, 
+    income_ratio, commission, the_seller_want_want, seller_id, name_of_shop, platform_type, 
+    coupon_id, total_coupons, coupon_surplus, coupon_value, coupon_start_time, coupon_closing_time, 
+    coupon_link, product_coupon_promotion_link
+  </sql>
+  <select id="selectByExample" parameterType="com.example.webchat.entity.CouponsExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from coupons
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from coupons
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from coupons
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.example.webchat.entity.CouponsExample">
+    delete from coupons
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.example.webchat.entity.Coupons">
+    insert into coupons (id, product_id, trade_name, 
+      main_chart_of_commodities, product_information_page_link_address, 
+      commodity_category_i, link_to_taobao, commodity_price, 
+      monthly_merchandise_sales, income_ratio, commission, 
+      the_seller_want_want, seller_id, name_of_shop, 
+      platform_type, coupon_id, total_coupons, 
+      coupon_surplus, coupon_value, coupon_start_time, 
+      coupon_closing_time, coupon_link, product_coupon_promotion_link
+      )
+    values (#{id,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, #{tradeName,jdbcType=VARCHAR}, 
+      #{mainChartOfCommodities,jdbcType=VARCHAR}, #{productInformationPageLinkAddress,jdbcType=VARCHAR}, 
+      #{commodityCategoryI,jdbcType=VARCHAR}, #{linkToTaobao,jdbcType=VARCHAR}, #{commodityPrice,jdbcType=VARCHAR}, 
+      #{monthlyMerchandiseSales,jdbcType=VARCHAR}, #{incomeRatio,jdbcType=VARCHAR}, #{commission,jdbcType=VARCHAR}, 
+      #{theSellerWantWant,jdbcType=VARCHAR}, #{sellerId,jdbcType=VARCHAR}, #{nameOfShop,jdbcType=VARCHAR}, 
+      #{platformType,jdbcType=VARCHAR}, #{couponId,jdbcType=VARCHAR}, #{totalCoupons,jdbcType=VARCHAR}, 
+      #{couponSurplus,jdbcType=VARCHAR}, #{couponValue,jdbcType=VARCHAR}, #{couponStartTime,jdbcType=VARCHAR}, 
+      #{couponClosingTime,jdbcType=VARCHAR}, #{couponLink,jdbcType=VARCHAR}, #{productCouponPromotionLink,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.webchat.entity.Coupons">
+    insert into coupons
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="productId != null">
+        product_id,
+      </if>
+      <if test="tradeName != null">
+        trade_name,
+      </if>
+      <if test="mainChartOfCommodities != null">
+        main_chart_of_commodities,
+      </if>
+      <if test="productInformationPageLinkAddress != null">
+        product_information_page_link_address,
+      </if>
+      <if test="commodityCategoryI != null">
+        commodity_category_i,
+      </if>
+      <if test="linkToTaobao != null">
+        link_to_taobao,
+      </if>
+      <if test="commodityPrice != null">
+        commodity_price,
+      </if>
+      <if test="monthlyMerchandiseSales != null">
+        monthly_merchandise_sales,
+      </if>
+      <if test="incomeRatio != null">
+        income_ratio,
+      </if>
+      <if test="commission != null">
+        commission,
+      </if>
+      <if test="theSellerWantWant != null">
+        the_seller_want_want,
+      </if>
+      <if test="sellerId != null">
+        seller_id,
+      </if>
+      <if test="nameOfShop != null">
+        name_of_shop,
+      </if>
+      <if test="platformType != null">
+        platform_type,
+      </if>
+      <if test="couponId != null">
+        coupon_id,
+      </if>
+      <if test="totalCoupons != null">
+        total_coupons,
+      </if>
+      <if test="couponSurplus != null">
+        coupon_surplus,
+      </if>
+      <if test="couponValue != null">
+        coupon_value,
+      </if>
+      <if test="couponStartTime != null">
+        coupon_start_time,
+      </if>
+      <if test="couponClosingTime != null">
+        coupon_closing_time,
+      </if>
+      <if test="couponLink != null">
+        coupon_link,
+      </if>
+      <if test="productCouponPromotionLink != null">
+        product_coupon_promotion_link,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null">
+        #{productId,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeName != null">
+        #{tradeName,jdbcType=VARCHAR},
+      </if>
+      <if test="mainChartOfCommodities != null">
+        #{mainChartOfCommodities,jdbcType=VARCHAR},
+      </if>
+      <if test="productInformationPageLinkAddress != null">
+        #{productInformationPageLinkAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="commodityCategoryI != null">
+        #{commodityCategoryI,jdbcType=VARCHAR},
+      </if>
+      <if test="linkToTaobao != null">
+        #{linkToTaobao,jdbcType=VARCHAR},
+      </if>
+      <if test="commodityPrice != null">
+        #{commodityPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="monthlyMerchandiseSales != null">
+        #{monthlyMerchandiseSales,jdbcType=VARCHAR},
+      </if>
+      <if test="incomeRatio != null">
+        #{incomeRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="commission != null">
+        #{commission,jdbcType=VARCHAR},
+      </if>
+      <if test="theSellerWantWant != null">
+        #{theSellerWantWant,jdbcType=VARCHAR},
+      </if>
+      <if test="sellerId != null">
+        #{sellerId,jdbcType=VARCHAR},
+      </if>
+      <if test="nameOfShop != null">
+        #{nameOfShop,jdbcType=VARCHAR},
+      </if>
+      <if test="platformType != null">
+        #{platformType,jdbcType=VARCHAR},
+      </if>
+      <if test="couponId != null">
+        #{couponId,jdbcType=VARCHAR},
+      </if>
+      <if test="totalCoupons != null">
+        #{totalCoupons,jdbcType=VARCHAR},
+      </if>
+      <if test="couponSurplus != null">
+        #{couponSurplus,jdbcType=VARCHAR},
+      </if>
+      <if test="couponValue != null">
+        #{couponValue,jdbcType=VARCHAR},
+      </if>
+      <if test="couponStartTime != null">
+        #{couponStartTime,jdbcType=VARCHAR},
+      </if>
+      <if test="couponClosingTime != null">
+        #{couponClosingTime,jdbcType=VARCHAR},
+      </if>
+      <if test="couponLink != null">
+        #{couponLink,jdbcType=VARCHAR},
+      </if>
+      <if test="productCouponPromotionLink != null">
+        #{productCouponPromotionLink,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.example.webchat.entity.CouponsExample" resultType="java.lang.Long">
+    select count(*) from coupons
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update coupons
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productId != null">
+        product_id = #{record.productId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tradeName != null">
+        trade_name = #{record.tradeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mainChartOfCommodities != null">
+        main_chart_of_commodities = #{record.mainChartOfCommodities,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productInformationPageLinkAddress != null">
+        product_information_page_link_address = #{record.productInformationPageLinkAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.commodityCategoryI != null">
+        commodity_category_i = #{record.commodityCategoryI,jdbcType=VARCHAR},
+      </if>
+      <if test="record.linkToTaobao != null">
+        link_to_taobao = #{record.linkToTaobao,jdbcType=VARCHAR},
+      </if>
+      <if test="record.commodityPrice != null">
+        commodity_price = #{record.commodityPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.monthlyMerchandiseSales != null">
+        monthly_merchandise_sales = #{record.monthlyMerchandiseSales,jdbcType=VARCHAR},
+      </if>
+      <if test="record.incomeRatio != null">
+        income_ratio = #{record.incomeRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="record.commission != null">
+        commission = #{record.commission,jdbcType=VARCHAR},
+      </if>
+      <if test="record.theSellerWantWant != null">
+        the_seller_want_want = #{record.theSellerWantWant,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sellerId != null">
+        seller_id = #{record.sellerId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nameOfShop != null">
+        name_of_shop = #{record.nameOfShop,jdbcType=VARCHAR},
+      </if>
+      <if test="record.platformType != null">
+        platform_type = #{record.platformType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.couponId != null">
+        coupon_id = #{record.couponId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.totalCoupons != null">
+        total_coupons = #{record.totalCoupons,jdbcType=VARCHAR},
+      </if>
+      <if test="record.couponSurplus != null">
+        coupon_surplus = #{record.couponSurplus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.couponValue != null">
+        coupon_value = #{record.couponValue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.couponStartTime != null">
+        coupon_start_time = #{record.couponStartTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.couponClosingTime != null">
+        coupon_closing_time = #{record.couponClosingTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.couponLink != null">
+        coupon_link = #{record.couponLink,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productCouponPromotionLink != null">
+        product_coupon_promotion_link = #{record.productCouponPromotionLink,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update coupons
+    set id = #{record.id,jdbcType=VARCHAR},
+      product_id = #{record.productId,jdbcType=VARCHAR},
+      trade_name = #{record.tradeName,jdbcType=VARCHAR},
+      main_chart_of_commodities = #{record.mainChartOfCommodities,jdbcType=VARCHAR},
+      product_information_page_link_address = #{record.productInformationPageLinkAddress,jdbcType=VARCHAR},
+      commodity_category_i = #{record.commodityCategoryI,jdbcType=VARCHAR},
+      link_to_taobao = #{record.linkToTaobao,jdbcType=VARCHAR},
+      commodity_price = #{record.commodityPrice,jdbcType=VARCHAR},
+      monthly_merchandise_sales = #{record.monthlyMerchandiseSales,jdbcType=VARCHAR},
+      income_ratio = #{record.incomeRatio,jdbcType=VARCHAR},
+      commission = #{record.commission,jdbcType=VARCHAR},
+      the_seller_want_want = #{record.theSellerWantWant,jdbcType=VARCHAR},
+      seller_id = #{record.sellerId,jdbcType=VARCHAR},
+      name_of_shop = #{record.nameOfShop,jdbcType=VARCHAR},
+      platform_type = #{record.platformType,jdbcType=VARCHAR},
+      coupon_id = #{record.couponId,jdbcType=VARCHAR},
+      total_coupons = #{record.totalCoupons,jdbcType=VARCHAR},
+      coupon_surplus = #{record.couponSurplus,jdbcType=VARCHAR},
+      coupon_value = #{record.couponValue,jdbcType=VARCHAR},
+      coupon_start_time = #{record.couponStartTime,jdbcType=VARCHAR},
+      coupon_closing_time = #{record.couponClosingTime,jdbcType=VARCHAR},
+      coupon_link = #{record.couponLink,jdbcType=VARCHAR},
+      product_coupon_promotion_link = #{record.productCouponPromotionLink,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.webchat.entity.Coupons">
+    update coupons
+    <set>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeName != null">
+        trade_name = #{tradeName,jdbcType=VARCHAR},
+      </if>
+      <if test="mainChartOfCommodities != null">
+        main_chart_of_commodities = #{mainChartOfCommodities,jdbcType=VARCHAR},
+      </if>
+      <if test="productInformationPageLinkAddress != null">
+        product_information_page_link_address = #{productInformationPageLinkAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="commodityCategoryI != null">
+        commodity_category_i = #{commodityCategoryI,jdbcType=VARCHAR},
+      </if>
+      <if test="linkToTaobao != null">
+        link_to_taobao = #{linkToTaobao,jdbcType=VARCHAR},
+      </if>
+      <if test="commodityPrice != null">
+        commodity_price = #{commodityPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="monthlyMerchandiseSales != null">
+        monthly_merchandise_sales = #{monthlyMerchandiseSales,jdbcType=VARCHAR},
+      </if>
+      <if test="incomeRatio != null">
+        income_ratio = #{incomeRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="commission != null">
+        commission = #{commission,jdbcType=VARCHAR},
+      </if>
+      <if test="theSellerWantWant != null">
+        the_seller_want_want = #{theSellerWantWant,jdbcType=VARCHAR},
+      </if>
+      <if test="sellerId != null">
+        seller_id = #{sellerId,jdbcType=VARCHAR},
+      </if>
+      <if test="nameOfShop != null">
+        name_of_shop = #{nameOfShop,jdbcType=VARCHAR},
+      </if>
+      <if test="platformType != null">
+        platform_type = #{platformType,jdbcType=VARCHAR},
+      </if>
+      <if test="couponId != null">
+        coupon_id = #{couponId,jdbcType=VARCHAR},
+      </if>
+      <if test="totalCoupons != null">
+        total_coupons = #{totalCoupons,jdbcType=VARCHAR},
+      </if>
+      <if test="couponSurplus != null">
+        coupon_surplus = #{couponSurplus,jdbcType=VARCHAR},
+      </if>
+      <if test="couponValue != null">
+        coupon_value = #{couponValue,jdbcType=VARCHAR},
+      </if>
+      <if test="couponStartTime != null">
+        coupon_start_time = #{couponStartTime,jdbcType=VARCHAR},
+      </if>
+      <if test="couponClosingTime != null">
+        coupon_closing_time = #{couponClosingTime,jdbcType=VARCHAR},
+      </if>
+      <if test="couponLink != null">
+        coupon_link = #{couponLink,jdbcType=VARCHAR},
+      </if>
+      <if test="productCouponPromotionLink != null">
+        product_coupon_promotion_link = #{productCouponPromotionLink,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.webchat.entity.Coupons">
+    update coupons
+    set product_id = #{productId,jdbcType=VARCHAR},
+      trade_name = #{tradeName,jdbcType=VARCHAR},
+      main_chart_of_commodities = #{mainChartOfCommodities,jdbcType=VARCHAR},
+      product_information_page_link_address = #{productInformationPageLinkAddress,jdbcType=VARCHAR},
+      commodity_category_i = #{commodityCategoryI,jdbcType=VARCHAR},
+      link_to_taobao = #{linkToTaobao,jdbcType=VARCHAR},
+      commodity_price = #{commodityPrice,jdbcType=VARCHAR},
+      monthly_merchandise_sales = #{monthlyMerchandiseSales,jdbcType=VARCHAR},
+      income_ratio = #{incomeRatio,jdbcType=VARCHAR},
+      commission = #{commission,jdbcType=VARCHAR},
+      the_seller_want_want = #{theSellerWantWant,jdbcType=VARCHAR},
+      seller_id = #{sellerId,jdbcType=VARCHAR},
+      name_of_shop = #{nameOfShop,jdbcType=VARCHAR},
+      platform_type = #{platformType,jdbcType=VARCHAR},
+      coupon_id = #{couponId,jdbcType=VARCHAR},
+      total_coupons = #{totalCoupons,jdbcType=VARCHAR},
+      coupon_surplus = #{couponSurplus,jdbcType=VARCHAR},
+      coupon_value = #{couponValue,jdbcType=VARCHAR},
+      coupon_start_time = #{couponStartTime,jdbcType=VARCHAR},
+      coupon_closing_time = #{couponClosingTime,jdbcType=VARCHAR},
+      coupon_link = #{couponLink,jdbcType=VARCHAR},
+      product_coupon_promotion_link = #{productCouponPromotionLink,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

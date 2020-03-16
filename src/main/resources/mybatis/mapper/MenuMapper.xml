@@ -208,4 +208,15 @@
       parent_id = #{parentId,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="getColumn" resultType="com.example.webchat.entity.Column">
+    select
+    COLUMN_NAME as name,
+    DATA_TYPE as type ,
+    CHARACTER_MAXIMUM_LENGTH as length
+    from information_schema.COLUMNS
+    where TABLE_NAME=#{tableName};
+  </select>
+  <update id="updateColumn"  >
+alter table ${tableName} change  column ${name} ${newName}  ${type}(${length})
+  </update>
 </mapper>

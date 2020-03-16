@@ -27,7 +27,7 @@
         <!--</table>-->
         <!--<table  tableName="paragraph" domainObjectName="Paragraph">-->
         <!--</table>-->
-        <table  tableName="1" domainObjectName="Photo">
+        <table  tableName="coupons" domainObjectName="Coupons">
         </table>
     </context>
 </generatorConfiguration>

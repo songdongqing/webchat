@@ -1,5 +1,6 @@
 package com.example.webchat.mapper;
 
+import com.example.webchat.entity.Column;
 import com.example.webchat.entity.Menu;
 import com.example.webchat.entity.MenuExample;
 import java.util.List;
@@ -30,4 +31,8 @@ public interface MenuMapper {
     int updateByPrimaryKeySelective(Menu record);
 
     int updateByPrimaryKey(Menu record);
+
+    List<Column> getColumn(@Param("tableName")String tableName);
+
+    void updateColumn(Column column);
 }

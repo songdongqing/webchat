@@ -34,6 +34,9 @@ public class WebChatService {
     @Autowired
     MenuService menuService;
 
+    @Autowired
+    CouponsService couponsService;
+
 
 
     private String mainTextMessage(String content,TextMessage textMessage,VoiceMessage voiceMessage,ImageMessage imgmsg) throws IOException {
@@ -52,7 +55,7 @@ public class WebChatService {
             //优惠券
             case "1" : {
                 redisTemplate.opsForValue().set(RedisKey.getMainType(textMessage.getToUserName()),MenuEnum.YOUHUANUAN.getCode());
-                textMessage.setContent("https://how2j.cn/");
+                textMessage.setContent("请输入商品名：");
                 respXml =  MessageUtil.textMessageToXml(textMessage);
                 break;
             }
@@ -94,8 +97,7 @@ public class WebChatService {
 
         String respXml = null;
 
-        if(menuId.equals(MenuEnum.MAINMENU.getCode())){
-//            stringRedisTemplate.opsForValue().set(RedisKey.getMainType(textMessage.getToUserName()),null);
+        if(content.equals(MenuEnum.MAINMENU.getCode())){
             redisTemplate.delete(RedisKey.getMainType(textMessage.getToUserName()));
             textMessage.setContent(MenuUtil.getMenu(menuService.selectAll()));
             respXml = MessageUtil.textMessageToXml(textMessage);
@@ -103,13 +105,22 @@ public class WebChatService {
             switch (menuId){
                 //优惠券
                 case "1" : {
-                    textMessage.setContent("暂无菜单项");
+                    //获取传过来的商品名字
+                    List<Coupons> couponsByName = couponsService.getCouponsByName(content);
+                    StringBuilder stringBuilder = new StringBuilder();
+                    for(Coupons coupons : couponsByName){
+                       stringBuilder.append(coupons.getTradeName()+"\n");
+                       stringBuilder.append("优惠券面值："+coupons.getCouponValue()+"\n");
+                       stringBuilder.append(coupons.getProductCouponPromotionLink()+"\n"+"\n");
+                    }
+                    textMessage.setContent(stringBuilder.toString());
                     respXml = MessageUtil.textMessageToXml(textMessage);
                     break;
                 }
 
                 //讲故事
                 case "2" :{
+
                     if(content.equals("1")){
 
                         textMessage.setContent("小狼狗");

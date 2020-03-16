@@ -43,6 +43,7 @@ public class UploadController {
     //文件上传处理器
     @RequestMapping(value = "uploadController",method = RequestMethod.POST)
     @ResponseBody
+    //参数是HttpServletRequest和MultipartFile
     public String fileUploadController(HttpServletRequest request, @RequestParam("file") MultipartFile file){
 
         //判断文件是否为空
@@ -95,6 +96,7 @@ public class UploadController {
                     os.write(buffer,0,i);
                     i=bufferedInputStream.read(buffer);
                 }
+                //刷新缓冲区
                 os.flush();
             }catch (IOException e){
                 e.printStackTrace();
