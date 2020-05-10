@@ -496,4 +496,30 @@
       product_coupon_promotion_link = #{productCouponPromotionLink,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+  <insert id="insertList" parameterType="com.example.webchat.entity.Coupons">
+      insert into coupons (id, product_id, trade_name,
+      main_chart_of_commodities, product_information_page_link_address,
+      commodity_category_i, link_to_taobao, commodity_price,
+      monthly_merchandise_sales, income_ratio, commission,
+      the_seller_want_want, seller_id, name_of_shop,
+      platform_type, coupon_id, total_coupons,
+      coupon_surplus, coupon_value, coupon_start_time,
+      coupon_closing_time, coupon_link, product_coupon_promotion_link
+      )
+    values
+    <foreach collection ="list" item="item" index= "index" separator =",">
+      (
+      #{item.id,jdbcType=VARCHAR}, #{item.productId,jdbcType=VARCHAR}, #{item.tradeName,jdbcType=VARCHAR},
+      #{item.mainChartOfCommodities,jdbcType=VARCHAR}, #{item.productInformationPageLinkAddress,jdbcType=VARCHAR},
+      #{item.commodityCategoryI,jdbcType=VARCHAR}, #{item.linkToTaobao,jdbcType=VARCHAR}, #{item.commodityPrice,jdbcType=VARCHAR},
+      #{item.monthlyMerchandiseSales,jdbcType=VARCHAR}, #{item.incomeRatio,jdbcType=VARCHAR}, #{item.commission,jdbcType=VARCHAR},
+      #{item.theSellerWantWant,jdbcType=VARCHAR}, #{item.sellerId,jdbcType=VARCHAR}, #{item.nameOfShop,jdbcType=VARCHAR},
+      #{item.platformType,jdbcType=VARCHAR}, #{item.couponId,jdbcType=VARCHAR}, #{item.totalCoupons,jdbcType=VARCHAR},
+      #{item.couponSurplus,jdbcType=VARCHAR}, #{item.couponValue,jdbcType=VARCHAR}, #{item.couponStartTime,jdbcType=VARCHAR},
+      #{item.couponClosingTime,jdbcType=VARCHAR}, #{item.couponLink,jdbcType=VARCHAR}, #{item.productCouponPromotionLink,jdbcType=VARCHAR}
+      )
+    </foreach>
+  </insert>
+
 </mapper>

@@ -27,4 +27,6 @@ public interface CouponsMapper {
     int updateByPrimaryKeySelective(Coupons record);
 
     int updateByPrimaryKey(Coupons record);
+
+    int insertList(List<Coupons> coupons);
 }

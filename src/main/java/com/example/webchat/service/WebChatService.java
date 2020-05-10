@@ -55,7 +55,8 @@ public class WebChatService {
             //优惠券
             case "1" : {
                 redisTemplate.opsForValue().set(RedisKey.getMainType(textMessage.getToUserName()),MenuEnum.YOUHUANUAN.getCode());
-                textMessage.setContent("请输入商品名：");
+//                textMessage.setContent("请输入商品名：");
+                textMessage.setContent("http://tktdkb.cn/coupons/toGetCoupons?id="+textMessage.getToUserName());
                 respXml =  MessageUtil.textMessageToXml(textMessage);
                 break;
             }
